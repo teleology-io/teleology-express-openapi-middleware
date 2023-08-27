@@ -109,12 +109,12 @@ function resolveParameters(
       },
     );
 
-  return resolved.length ? resolved : undefined;
+  return Object.keys(resolved.properties).length ? resolved : undefined;
 }
 
-export const schemaMiddleware = (spec: Spec, options?: Options) => {
+export const openApiValidation = (spec: any, options?: Options) => {
   if (!spec) {
-    throw new Error('Invalid schema');
+    throw new Error('Invalid spec');
   }
 
   // Build paths once
