@@ -36,7 +36,9 @@ interface Properties {
 
 interface JsonSchema {
   type?: string;
-  properties?: Map<string, Properties>;
+  properties?: {
+    [index: string]: Properties;
+  };
   required?: string[];
   additionalProperties?: boolean;
   $ref?: string;
@@ -66,12 +68,20 @@ interface RequestBody {
 function resolveSchema(spec: any, schema?: JsonSchema) {
   if (!schema) return undefined;
 
+  let s = schema;
   if (schema.$ref) {
     const resolvedRef = schema.$ref.replace('#/', '').replace(/\//g, '.');
 
-    return get(spec, resolvedRef);
+    s = get(spec, resolvedRef);
   }
-  return schema;
+
+  if (s.properties) {
+    for (const [k, v] of Object.entries(s.properties)) {
+      // @ts-ignore
+      s.properties[k] = resolveSchema(spec, v);
+    }
+  }
+  return s;
 }
 
 function resolveParams(compiled: any, path?: string) {

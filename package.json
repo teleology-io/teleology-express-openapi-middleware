@@ -1,6 +1,6 @@
 {
   "name": "@teleology/express-openapi-middleware",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Uses an openapi spec to validate express server endpoints",
   "main": "lib/index.js",
   "author": "Chris Sullivan <chrissullivan.dev@gmail.com>",
